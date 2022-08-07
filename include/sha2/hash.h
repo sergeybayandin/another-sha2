@@ -9,7 +9,8 @@
 #include <algorithm>
 #include <string_view>
 
-#include "utils/hash.h"
+#include "hidden/common/utils.h"
+#include "hidden/common/concepts.h"
 
 namespace sha2 {
 
@@ -20,7 +21,7 @@ class Hash final {
           storage_.fill(std::byte(0));
       }
 
-      template <utils::ContiguousBytesRange R> [[ nodiscard ]]
+      template <hidden::common::ContiguousBytesRange R> [[ nodiscard ]]
       static std::optional<Hash> from_range(R &&range) noexcept {
           if (range.size() != Size) {
               return std::nullopt;
@@ -47,7 +48,7 @@ class Hash final {
                   return std::nullopt;
               }
 
-              byte = utils::to_byte(std::tolower(*it), std::tolower(*(it + 1)));
+              byte = hidden::common::to_byte(std::tolower(*it), std::tolower(*(it + 1)));
 
               it += 2;
           }
@@ -62,8 +63,8 @@ class Hash final {
           str.reserve(Size * 2);
 
           for (auto byte : as_bytes()) {
-              str += utils::to_hex(std::to_integer<int>(byte >> 4));
-              str += utils::to_hex(std::to_integer<int>(byte & std::byte(0xf)));
+              str += hidden::common::to_hex(std::to_integer<int>(byte >> 4));
+              str += hidden::common::to_hex(std::to_integer<int>(byte & std::byte(0xf)));
           }
 
           return str;
