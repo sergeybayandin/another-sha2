@@ -1,5 +1,5 @@
-#ifndef SHA2_EXECUTOR_H
-#define SHA2_EXECUTOR_H
+#ifndef SHA2_STATE_ENGINE_H
+#define SHA2_STATE_ENGINE_H
 
 #include <ranges>
 
@@ -137,4 +137,4 @@ using Sha512StateEngine = Sha2StateEngine<
 
 } // hidden
 
-#endif // SHA2_EXECUTOR_H
+#endif // SHA2_STATE_ENGINE_H
