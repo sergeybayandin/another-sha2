@@ -1,12 +1,9 @@
 #ifndef SHA256_H
 #define SHA256_H
 
-namespace sha2 {
+#include "hash.h"
 
-template <std::size_t Size>
-class Hash;
-
-} // sha2
+#include "hidden/sha2_state_engine.h"
 
 namespace sha2 {
 
@@ -14,23 +11,23 @@ class Sha256 final {
   public:
       using OutputHash = sha2::Hash<32>;
 
-      inline Sha256() noexcept;
+      Sha256() noexcept;
 
-      inline Sha256 &reset() noexcept;
+      [[ nodiscard ]]
       OutputHash finalize() noexcept;
 
       template <hidden::common::ContiguousBytesRange R>
-      Sha256 &update(R &&range) noexcept;
+      inline Sha256 &update(R &&range) noexcept {
+          state_engine_.run(std::forward<R>(range));
+          return *this;
+      }
 
-      template <hidden::common::ContiguousBytesRange R>
-      OutputHash operator()(R &&range) noexcept;
+      inline Sha256 &update(std::string_view str) noexcept {
+          return update(std::as_bytes(std::span(str)));
+      }
 
   private:
-      hidden::Sha2StateEngine<
-          hidden::common::rounds<64>,
-          hidden::common::chunk_size<64>,
-          hidden::common::WordType<std::uint32_t>
-      > state_engine_;
+      hidden::Sha256StateEngine state_engine_;
 };
 
 } // sha2

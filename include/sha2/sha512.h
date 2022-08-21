@@ -1,29 +1,33 @@
 #ifndef SHA512_H
 #define SHA512_H
 
+#include "hash.h"
+
+#include "hidden/sha2_state_engine.h"
+
 namespace sha2 {
 
 class Sha512 final {
   public:
       using OutputHash = sha2::Hash<64>;
 
-      inline Sha512() noexcept;
-
-      inline Sha512 &reset() noexcept;
+      Sha512() noexcept;
+ 
+      [[ nodiscard ]]
       OutputHash finalize() noexcept;
 
-      template <utils::ContiguousBytesRange R>
-      Sha512 &update(R &&range) noexcept;
+      template <hidden::common::ContiguousBytesRange R>
+      inline Sha512 &update(R &&range) noexcept {
+          state_engine_.run(std::forward<R>(range));
+          return *this;
+      }
 
-      template <utils::ContiguousBytesRange R>
-      OutputHash operator()(R &&range) noexcept;
+      inline Sha512 &update(std::string_view str) noexcept {
+          return update(std::as_bytes(std::span(str)));
+      }
 
   private:
-      hidden::Sha2StateEngine<
-          hidden::round<80>,
-          hidden::chunk_size<128>,
-          hidden::WordType<std::uint64_t>
-      > state_engine_;
+      hidden::Sha512StateEngine state_engine_;
 };
 
 } // sha2
