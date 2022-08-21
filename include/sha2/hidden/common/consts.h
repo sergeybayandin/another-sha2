@@ -10,10 +10,10 @@ template <std::size_t N>
 constexpr auto chunk_size = N;
 
 template <class T, std::size_t N>
-constexpr std::array<T, N> constants;
+constexpr std::array<T, N> consts;
 
 template <>
-constexpr std::array<std::uint32_t, rounds<64>> constants<std::uint32_t, rounds<64>> {
+constexpr std::array<std::uint32_t, rounds<64>> consts<std::uint32_t, rounds<64>> {
     0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
     0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
     0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
@@ -25,7 +25,7 @@ constexpr std::array<std::uint32_t, rounds<64>> constants<std::uint32_t, rounds<
 };
 
 template <>
-constexpr std::array<std::uint64_t, rounds<80>> constants<std::uint64_t, rounds<80>> {
+constexpr std::array<std::uint64_t, rounds<80>> consts<std::uint64_t, rounds<80>> {
     0x428a2f98d728ae22, 0x7137449123ef65cd, 0xb5c0fbcfec4d3b2f, 0xe9b5dba58189dbbc, 0x3956c25bf348b538, 
     0x59f111f1b605d019, 0x923f82a4af194f9b, 0xab1c5ed5da6d8118, 0xd807aa98a3030242, 0x12835b0145706fbe, 
     0x243185be4ee4b28c, 0x550c7dc3d5ffb4e2, 0x72be5d74f27b896f, 0x80deb1fe3b1696b1, 0x9bdc06a725c71235, 
@@ -46,6 +46,24 @@ constexpr std::array<std::uint64_t, rounds<80>> constants<std::uint64_t, rounds<
 
 template <class T>
 using WordType = T;
+
+constexpr const std::initializer_list<std::uint32_t> sha224_initializers {
+    0xc1059ed8, 0x367cd507, 0x3070dd17, 0xf70e5939, 0xffc00b31, 0x68581511, 0x64f98fa7, 0xbefa4fa4
+};
+
+constexpr const std::initializer_list<std::uint32_t> sha256_initializers {
+    0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
+};
+
+constexpr const std::initializer_list<std::uint64_t> sha384_initializers {
+    0xcbbb9d5dc1059ed8, 0x629a292a367cd507, 0x9159015a3070dd17, 0x152fecd8f70e5939,
+    0x67332667ffc00b31, 0x8eb44a8768581511, 0xdb0c2e0d64f98fa7, 0x47b5481dbefa4fa4
+};
+
+constexpr const std::initializer_list<std::uint64_t> sha512_initializers {
+    0x6a09e667f3bcc908, 0xbb67ae8584caa73b, 0x3c6ef372fe94f82b, 0xa54ff53a5f1d36f1, 
+    0x510e527fade682d1, 0x9b05688c2b3e6c1f, 0x1f83d9abfb41bd6b, 0x5be0cd19137e2179
+};
 
 } // common
 
